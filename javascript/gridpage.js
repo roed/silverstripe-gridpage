@@ -34,6 +34,7 @@
                             var editor = tinyMCE.get('tinyMCEEditor');
                             if(editor){
                                 editor.setContent(content);
+                                editor.onLoadContent.dispatch(editor,{content:editor.getContent()});
                                 jElement.find('iframe').height((jElement.height() - 200) + 'px');
                                 clearInterval(intv);
                             }
