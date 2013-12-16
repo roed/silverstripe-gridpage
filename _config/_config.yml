@@ -1,0 +1,39 @@
+GridPage:
+  css_columnclasses:
+    '12/12':
+      width: 100
+      class: 'col-xs-12'
+    '11/12':
+      width: 91.66
+      class: 'col-xs-11'
+    '10/12':
+      width: 83.33
+      class: 'col-xs-10'
+    '9/12':
+      width:
+      class: 'col-xs-9'
+    '8/12':
+      width: 75
+      class: 'col-xs-8'
+    '7/12':
+      width: 58.33
+      class: 'col-xs-7'
+    '6/12':
+      width: 50
+      class: 'col-xs-6'
+    '5/12':
+      width:
+      class: 'col-xs-5'
+    '4/12':
+      width: 41.66
+      class: 'col-xs-4'
+    '3/12':
+      width: 25
+      class: 'col-xs-3'
+    '2/12':
+      width: 16.66
+      class: 'col-xs-2'
+    '1/12':
+      width: 8.33
+      class: 'col-xs-1'
+  css_rowclass: 'row'

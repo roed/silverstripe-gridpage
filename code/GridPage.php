@@ -3,10 +3,10 @@
 class GridPage extends Page
 {
 
-    public static $icon = 'gridpage/images/icons/grid.png';
-    public static $description = 'Display content in rows and columns';
-    public static $singular_name = "Grid page";
-    public static $plural_name = "Grid pages";
+	public static $icon = 'gridpage/images/icons/grid.png';
+	public static $description = 'Display content in rows and columns';
+	public static $singular_name = "Grid page";
+	public static $plural_name = "Grid pages";
 
     public static $db = array(
         'GridContent' => 'Text'
@@ -27,7 +27,8 @@ class GridPage extends Page
         SiteTree::enableCMSFieldsExtensions();
 
         $fields->removeByName('Content');
-        $fields->addFieldToTab('Root.Main', new LiteralField('grideditorholder', '<div id="grideditorholder"></div>'), 'Metadata');
+        $css_classes = json_encode(self::config()->css_columnclasses);
+        $fields->addFieldToTab('Root.Main', new LiteralField('grideditorholder', '<div id="grideditorholder" data-css-classes="'.Convert::raw2xml($css_classes).'"></div>'), 'Metadata');
         $fields->addFieldToTab('Root.Main', new HiddenField('GridContent'));
 
         $this->extend('updateCMSFields', $fields);
@@ -41,26 +42,29 @@ class GridPage extends Page
     }
 
     private function renderRow($data){
-        $output = '<div class="row-fluid">';
-        foreach($data->columns as $column){
-            $output .= $this->renderColumn($column);
-        }
-        $output .= '</div>';
-        return $output;
+		$row_class = self::config()->css_rowclass;
+		$row_class = $row_class ? $row_class : 'row';
+		$output = '<div class="'.$row_class.'">';
+		foreach($data->columns as $column){
+			$output .= $this->renderColumn($column);
+		}
+		$output .= '</div>';
+		return $output;
     }
 
     private function renderColumn($data){
-        if($data->extraclass == ''){
-            $output = '<div class="' . $data->class . '"><div class="column-inner">';
-        }else{
-            $output = '<div class="' . $data->class . ' ' . $data->extraclass . '"><div class="column-inner">';
-        }
-        $output .= $data->content;
-        foreach($data->rows as $row){
-            $output .= $this->renderRow($row);
-        }
-        $output .= '</div></div>';
-        return $output;
+		$css_classes = self::config()->css_columnclasses;
+		$css_class = (isset($css_classes[$data->columnname]) ? $css_classes[$data->columnname]['class'] : $data->class);
+		if ($data->extraclass) {
+			$css_class .= " ".$data->extraclass;
+		}
+		$output = '<div class="' . $css_class . '"><div class="column-inner">';
+		$output .= $data->content;
+		foreach($data->rows as $row){
+			$output .= $this->renderRow($row);
+		}
+		$output .= '</div></div>';
+		return $output;
     }
 
     public function GenerateContent(){
@@ -80,5 +84,4 @@ class GridPage extends Page
 
 class GridPage_Controller extends Page_Controller
 {
-
 }

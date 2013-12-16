@@ -3,7 +3,7 @@
  -Optie om column stijl aan te geven (column extra classes toe te voegen)
  */
 
-var GridEditor = {}
+var GridEditor = {};
 GridEditor.rowcount = 0;
 GridEditor.columncount = 0;
 GridEditor.basegridcount = 0;
@@ -89,18 +89,18 @@ GridEditor.getText = function (key) {
  * @type {Array}
  */
 GridEditor.widthOptions = [
-    ['100%', 100, 'span12'],
-    ['91.66%', 91.66, 'span11'],
-    ['83.33%', 83.33, 'span10'],
-    ['75%', 75, 'span9'],
-    ['66.66%', 66.66, 'span8'],
-    ['58.33%', 58.33, 'span7'],
-    ['50%', 50, 'span6'],
-    ['41.66%', 41.66, 'span5'],
-    ['33.33%', 33.33, 'span4'],
-    ['25%', 25, 'span3'],
-    ['16.66%', 16.66, 'span2'],
-    ['8.33%', 8.33, 'span1']
+    ['100%', 100, 'col-xs-12'],
+    ['91.66%', 91.66, 'col-xs-11'],
+    ['83.33%', 83.33, 'col-xs-10'],
+    ['75%', 75, 'col-xs-9'],
+    ['66.66%', 66.66, 'col-xs-8'],
+    ['58.33%', 58.33, 'col-xs-7'],
+    ['50%', 50, 'col-xs-6'],
+    ['41.66%', 41.66, 'col-xs-5'],
+    ['33.33%', 33.33, 'col-xs-4'],
+    ['25%', 25, 'col-xs-3'],
+    ['16.66%', 16.66, 'col-xs-2'],
+    ['8.33%', 8.33, 'col-xs-1']
 ];
 
 GridEditor.widthToClass = function (width) {
@@ -149,7 +149,7 @@ GridEditor.renderGrid = function(grid) {
 }
 
 GridEditor.renderRow = function(data) {
-    var output = '<div class="row-fluid">';
+    var output = '<div class="row">';
     jQuery(data.columns).each(function (index, element) {
         output += GridEditor.renderColumn(element);
     });
@@ -276,6 +276,7 @@ GridEditor.BaseGrid = function (holder, minWidthForRows, maxDepth) {
         var row = new GridEditor.Row(_this, prepend);
         _this.addRowToList(row);
         _this.updateRows();
+
         return row;
     }
 
@@ -331,7 +332,8 @@ GridEditor.BaseGrid = function (holder, minWidthForRows, maxDepth) {
         _this.updateRowSortable();
         _this.updateColumnSortable();
         _this.addToolTips();
-        jQuery(_this).trigger('change');
+
+	    jQuery(_this).trigger('change');
         return false;
     }
 
@@ -411,11 +413,11 @@ GridEditor.BaseGrid = function (holder, minWidthForRows, maxDepth) {
 
     /*UPDATE COLUMN SORTABLE*/
     this.updateColumnSortable = function () {
-        var elementsWithout = _this.domElement.find('.row-fluid:not(:data(uiSortable))');
-        var elementsWith = _this.domElement.find('.row-fluid:data(uiSortable)');
+        var elementsWithout = _this.domElement.find('.row:not(:data(uiSortable))');
+        var elementsWith = _this.domElement.find('.row:data(uiSortable)');
         elementsWith.sortable('refresh');
         elementsWithout.sortable({
-            connectWith:'#' + _this.id + ' .row-fluid',
+            connectWith:'#' + _this.id + ' .row',
             placeholder:GridEditor.prefixedCSS('column') + ' ' + GridEditor.prefixedCSS('highlight'),
             handle:'.' + GridEditor.prefixedCSS('move'),
             cursorAt:{ top:20, left:20 },
@@ -480,8 +482,8 @@ GridEditor.Row = function (owner, prepend) {
         owner.domElement.append(row);
     }
     this.domElement = jQuery('#' + this.id);
-    this.domElement.append('<div class="row-fluid" />');
-    this.domElementInner = this.domElement.find('> .row-fluid');
+    this.domElement.append('<div class="row" />');
+    this.domElementInner = this.domElement.find('> .row');
     this.domElement.data('javascript', this);
     this.domElement.hide();
     this.domElement.fadeIn();
@@ -676,7 +678,7 @@ GridEditor.Column = function (owner, width, content, extraclass) {
     /*CREATE DOM ELEMENT*/
     GridEditor.columncount = GridEditor.columncount + 1;
     this.id = GridEditor.prefixedCSS('column') + GridEditor.columncount;
-    var column = jQuery('<div class="' + GridEditor.prefixedCSS('column') + ' ' + GridEditor.widthToClass(width) + '" id="' + this.id + '"></div>');
+    var column = jQuery('<div class="' + GridEditor.prefixedCSS('column') + '" style="width:'+width+'%;" id="' + this.id + '"></div>');
     owner.domElementInner.append(column);
     this.domElement = jQuery('#' + this.id);
     this.domElement.append('<div class="' + GridEditor.prefixedCSS('content') + '" />');
@@ -834,8 +836,7 @@ GridEditor.Column = function (owner, width, content, extraclass) {
 
     /*WIDTH*/
     this.setWidth = function (width) {
-        _this.domElement.removeClass(GridEditor.widthToClass(_this.width));
-        _this.domElement.addClass(GridEditor.widthToClass(width));
+        _this.domElement.css('width',width+'%');
         _this.widthButton.find('small').html(width);
         _this.width = width;
         _this.checkAddRowButton();
@@ -880,14 +881,14 @@ GridEditor.Column = function (owner, width, content, extraclass) {
     }
     this.setContent = function (content) {
         if(GridEditor.cleanContentPreview){
-            var imgPlaceholder = 'tmp['+GridEditor.getText('image')+']tmp';
-            var cleanContent = content;
-            cleanContent = cleanContent.replace(/\[widget[^\]]*]/g,'tmp[');
-            cleanContent = cleanContent.replace(/\[\/widget[^\]]*]/g,']tmp');
-            cleanContent = cleanContent.replace(/<img[^>]*>/g, imgPlaceholder);
-            cleanContent = jQuery('<div>'+cleanContent+'</div>').text();
-            cleanContent = cleanContent.replace(/tmp\[/g,'<span class="'+GridEditor.prefixedCSS('highlightplaceholder')+'">');
-            cleanContent = cleanContent.replace(/\]tmp/g,'</span>');
+		   var imgPlaceholder = 'tmp['+GridEditor.getText('image')+']tmp';
+		   var cleanContent = content;
+		   cleanContent = cleanContent.replace(/\[widget[^\]]*]/g,'tmp[');
+		   cleanContent = cleanContent.replace(/\[\/widget[^\]]*]/g,']tmp');
+		   cleanContent = cleanContent.replace(/<img[^>]*>/g, imgPlaceholder);
+		   cleanContent = jQuery('<div>'+cleanContent+'</div>').text();
+		   cleanContent = cleanContent.replace(/tmp\[/g,'<span class="'+GridEditor.prefixedCSS('highlightplaceholder')+'">');
+		   cleanContent = cleanContent.replace(/\]tmp/g,'</span>');
         }
         if(GridEditor.maxLengthContentPreview){
             if(cleanContent.length > GridEditor.maxLengthContentPreview){
@@ -900,7 +901,7 @@ GridEditor.Column = function (owner, width, content, extraclass) {
         }
 
         _this.content = content;
-        jQuery(this.basegrid).trigger('change');
+	    jQuery(this.basegrid).trigger('change');
         return false;
     }
     this.showContentEditor = function () {
@@ -964,6 +965,7 @@ GridEditor.Column = function (owner, width, content, extraclass) {
         output.content = _this.content;
         output.width = _this.width;
         output.class = GridEditor.widthToClass(_this.width);
+        output.columnname = GridEditor.widthToKey(_this.width);
         output.extraclass = _this.extraClass;
         output.numrows = rows.length;
         output.rows = rows;

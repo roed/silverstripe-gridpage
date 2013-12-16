@@ -12,20 +12,12 @@
                 GridEditor.lang = ss.i18n.getLocale();
 
                 //width options
-                GridEditor.widthOptions = [
-                    ['12/12', 100, 'span12'],
-                    ['11/12', 91.66, 'span11'],
-                    ['10/12', 83.33, 'span10'],
-                    ['9/12', 75, 'span9'],
-                    ['8/12', 66.66, 'span8'],
-                    ['7/12', 58.33, 'span7'],
-                    ['6/12', 50, 'span6'],
-                    ['5/12', 41.66, 'span5'],
-                    ['4/12', 33.33, 'span4'],
-                    ['3/12', 25, 'span3'],
-                    ['2/12', 16.66, 'span2'],
-                    ['1/12', 8.33, 'span1']
-                ];
+                var columnConfig = this.data('css-classes');
+			 var widthOptions = [];
+			 for (var i in columnConfig) {
+				widthOptions.push([i, columnConfig[i].width, columnConfig[i].class]);
+			 }
+			 GridEditor.widthOptions = widthOptions;
 
                 //column classes
                 GridEditor.columnClasses = [
@@ -55,15 +47,15 @@
 
                 //content preview
                 GridEditor.cleanContentPreview = true;
-                GridEditor.maxLengthContentPreview = 150;
+                GridEditor.maxLengthContentPreview = 350;
 
                 //grid
                 grideditor = new GridEditor.BaseGrid(this, 50, 2);
                 grideditor.loadJSON( $('#Form_EditForm_GridContent').val() );
-                jQuery(grideditor).change(function() {
-				    $('#Form_EditForm_GridContent').val(grideditor.exportJSON());
-				    $('#Form_EditForm_GridContent').trigger('change.changetracker');
-			    });
+			 jQuery(grideditor).change(function() {
+				 $('#Form_EditForm_GridContent').val(grideditor.exportJSON());
+				 $('#Form_EditForm_GridContent').trigger('change.changetracker');
+			 });
 
             }
         });

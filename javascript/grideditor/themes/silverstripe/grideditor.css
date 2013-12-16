@@ -4,7 +4,7 @@
 .grideditor_holder a                { color: #444444; text-decoration: none; }
 .grideditor_holder a:hover          { text-decoration: none; }
 .grideditor_basegrid                { width: 100%; border-top: 1px solid #d0d3d5; border-bottom: 1px solid #d0d3d5; min-height: 200px; background: #fff; }
-.grideditor_basegrid .row-fluid     { min-height: 50px; }
+.grideditor_basegrid .row			{ min-height: 50px; }
 .grideditor_notice                  { background: #f0f0ee; padding: 3px 10px; border-radius: 5px; margin: 10px 0 0 0; display: inline-block; border: 1px solid #ccc; }
 
 /*LIGHTBOX*/
@@ -68,7 +68,7 @@
 
 /*ROW*/
 .grideditor_row                                             { border: 1px dashed #c0c0c2; margin: 15px 5px; padding: 10px; background: #eceff1; }
-.grideditor_row > .grideditor_toolbar                       { padding: 5px; margin-bottom: 10px; overflow: hidden; width: 70px; border: 1px solid #ccc; background: #f0f0ee; }
+.grideditor_row > .grideditor_toolbar                       { padding: 5px; margin-bottom: 10px; overflow: hidden; width: 85px; border: 1px solid #ccc; background: #f0f0ee; }
 .grideditor_row > .grideditor_toolbar a                     { margin-right: 10px; }
 .grideditor_row > .grideditor_toolbar a:last-child          { margin-right: 0; }
 .grideditor_row > .grideditor_toolbar a.grideditor_disabled { opacity: .5; filter: alpha(opacity = 50); cursor:not-allowed; }
@@ -77,8 +77,8 @@
 .grideditor_row.grideditor_valid                            { border-color: #76b43e; border-style: solid; }
 
 /*COLUMN*/
-.grideditor_column                          { border: 1px solid #cccccc; background: #fff; position: relative; min-height: 150px; }
-.grideditor_column > .grideditor_toolbar    { padding: 10px 5px; border-bottom: 1px solid #cccccc; background: #f0f0ee;  overflow: hidden; }
+.grideditor_column                          { border: 1px solid #cccccc; background: #fff; position: relative; min-height: 150px; float: left; }
+.grideditor_column > .grideditor_toolbar    { margin: 0px; padding: 10px 5px; border-bottom: 1px solid #cccccc; background: #f0f0ee;  overflow: hidden; }
 .grideditor_column > .grideditor_toolbar a  { margin-right: 10px; }
 .grideditor_column > .grideditor_content    { padding: 5px; cursor: pointer; }
 .grideditor_column.grideditor_highlight     { background: #76b43e; margin-left: 0; }
